@@ -10,7 +10,7 @@
     $message = ''; //記事の内容
     $now_date = ''; //現在時刻取得用
 
-    $FILE = 'message.txt'; //保存ファイル名
+    // $FILE = 'message.txt'; //保存ファイル名
     $id = uniqid(); //ユニークなIDを自動生成
     $DATA = []; //一回分の投稿の情報を入れる
     $BOARD = []; //全ての投稿の情報を入れる
@@ -33,6 +33,7 @@
     );
 
     // MySQLからデータを取得するための記述
+    // 手続き型からオブジェクト型へ変更する予定
     $query = "SELECT * FROM `data`";
     if ($success){
         $result = mysqli_query($link, $query);
@@ -40,12 +41,6 @@
             $BOARD[] = [$row['id'], $row['title'], $row['message']];
         }
     }
-
-    // .txtパターンのときに必要
-    // $FILEというファイルが存在しているときにファイルを読み込む
-    // if (file_exists($FILE)){
-    //     $BOARD = json_decode(file_get_contents($FILE));
-    // }
 
     if (!empty($_POST['btn_submit'])){
 
@@ -57,23 +52,9 @@
             // 現在時刻の取得方法を後で調べる
             // $now_date = date("Y-m-d H:i:s");
 
-            // .txtパターンのときに必要
-            // 新規データ
-            // $DATA = [$id, $view_name, $message];
-            // $BOARD[] = $DATA;
-
             // データ追加のためのQuery
             $insert_query = "INSERT INTO `data`(`id`, `title`, `message`) VALUES ('{$id}', '{$view_name}', '{$message}')"; 
             mysqli_query($link, $insert_query);
-
-            // .txtパターンのときに必要
-            // 全体配列をファイルに保存する
-            // file_put_contentsは fopen()→fwrite()→fclose を実行するのと同じ
-            // json_encodeは指定した値をJSON形式に変換した文字列を返す
-            // JSON_UNESCAPED_UNICODE を入れることで日本語でjsonを返してくれる
-            // これがないと文字コードで日本語部分が表示されてしまう
-            //ファイル保存するときのテキストメッセージが改行できないので確認する
-            // file_put_contents($FILE, json_encode($BOARD, JSON_UNESCAPED_UNICODE));
 
             header("Location: index.php");
             exit;
@@ -108,23 +89,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BBS</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="script.js"></script>
 </head>
 <body>
+    <!-- データベース接続確認 -->
     <?php 
         try {
             $db = new PDO('mysql:dbname=laravel_news;host=localhost;charset=utf8','root','root');
-            echo 'DB Connection Success!';
+            // 接続成功の文字を出したいときはコメントアウトを解除
+            // echo 'DB Connection Success!';
         } catch(PDOException $e) {
             echo 'DB接続エラー:' . $e->getMessage();
         };
     ?>
+    <!-- ヘッダー -->
     <nav class="main-header">
         <div class="nav-bar">
-            <a href="/php_bbs" class="nav-link">Laravel News</a>
+            <a href="/php_bbs_sql" class="nav-link">Laravel News</a>
         </div>
     </nav>
+    <!-- 記事投稿フォーム -->
     <section id="bbs-wrapper">
         <div class="container">
             <div class="bbs">
@@ -159,6 +144,7 @@
             <hr>
         </div>
     </section>
+    <!-- コメント表示 -->
     <section id="message-wrapper">
         <div class="container">
             <?php foreach((array)$BOARD as $value): ?>

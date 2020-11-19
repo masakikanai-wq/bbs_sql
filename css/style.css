@@ -86,19 +86,3 @@ input[type="text"], textarea {
     margin-top: 50px;
     margin-bottom: 50px;
 }
-
-/* コメント一覧の削除ボタン */
-/* CSSが変更できないので後ほど確認する */
-.btn-submit-delete {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    display: inline-block;
-    padding: 0.5em 1em;
-    color: blue;
-    text-decoration: underline;
-    background: none;
-    border: none;
-}
-
-
