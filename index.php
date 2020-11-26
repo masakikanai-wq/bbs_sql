@@ -90,7 +90,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BBS</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <!-- データベース接続確認 -->
@@ -161,5 +160,6 @@
             <?php endforeach; ?>
         </div>
     </section>
+    <script src="script.js"></script>
 </body>
 </html>
