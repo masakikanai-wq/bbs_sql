@@ -1,3 +1,6 @@
+/* index.phpのスタイルシート */
+/* 次回はこのmainににarticleのスタイルシートを読み込みたい */
+
 /* 全体 */
 * {
     box-sizing: border-box;
@@ -79,10 +82,4 @@ input[type="text"], textarea {
     color: #FFF;
     background-image: linear-gradient(45deg, #FFC107 0%, #ff8b5f 100%);
     transition: 1.0s;
-}
-
-/* article.php */
-#comment-submit-wrapper .container {
-    margin-top: 50px;
-    margin-bottom: 50px;
 }

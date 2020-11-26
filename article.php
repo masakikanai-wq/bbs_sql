@@ -78,17 +78,6 @@
             $statement = $db->prepare('DELETE FROM `comment` WHERE id=?');
             $statement->execute(array($del));
 
-            // 新しい全体配列を作る
-            // $new_comment_board = [];
-
-            // foreach ((array)$comment_data as $index => list($key, $comment_id)) {
-            //     if ($key !== $del){
-            //         $new_comment_board[] = $comment_data[$index];
-            //     }
-            // }
-
-            // file_put_contents($COMMENT_DATA, json_encode($new_comment_board, JSON_UNESCAPED_UNICODE));
-
             // 今いるページにリダイレクト
             header("Location: article.php?id=$id");
             exit;
@@ -107,8 +96,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BBS</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="css/style_article.css">
 </head>
 <body>
     <!-- データベース接続確認 -->
@@ -158,12 +146,11 @@
             <?php endif; ?>
             <div class="comment-submit">
                 <form action="" method="post">
-                    <div>
-                        <label for="comment">この投稿に関するコメント</label>
-                        <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="input-submit">
-                        <input class="btn" type="submit" name="btn_submit" value="送信">
+                    <div class="input-body">
+                        <textarea name="comment" id="comment" class="post-it post-it-blue"></textarea>
+                        <input class="btn-submit" type="submit" name="btn_submit" value="コメントを書く">
+                        <div class="input-submit">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -175,38 +162,24 @@
             <div class="comment-display">
                 <h3>コメント一覧</h3>
                 <hr>
-                <?php
-                    // ここでの記述が要らなかったら削除すること
-                    // $db = new PDO('mysql:dbname=laravel_news;host=localhost;charset=utf8','root','root');
-                    // $comments = $db->query("SELECT * FROM `comment` WHERE article_id= '" . $id . "' ");
-                ?>
-                <form action="" method="post">
-                    <?php while ($comment = $comments->fetch()): ?>
-                        <p><?php print($comment['comment']); ?></p>
-                        <div class="delete-submit">
-                            <input type="hidden" name="del" value="<?php print $comment['id'] ?>">
-                            <input class="btn-submit-delete" type="submit" name="btn_submit" value="削除" onclick="return confirm('コメントを削除しますか？')">
+                <div class="comment-display-area">
+                    <form action="" method="post">
+                        <div class="comment-input-body">
+                            <?php while ($comment = $comments->fetch()): ?>
+                                <div class="comment-input-posts">
+                                    <p class="post-it post-it-blue"><?php print($comment['comment']); ?></p>
+                                    <div class="delete-submit">
+                                        <input type="hidden" name="del" value="<?php print $comment['id'] ?>"/>
+                                        <input class="btn-submit-delete" type="submit" name="btn_submit" value="コメントを消す" onclick="return confirm('コメントを削除しますか？')">
+                                    </div>
+                                </div>
+                            <?php endwhile; ?>
                         </div>
-                        <hr>
-                    <?php endwhile; ?>
-                </form>
-                <!-- <?php foreach((array)$comment as $value): ?>
-                    <form class="comments" action="" method="post">
-                        <article>
-                            <div>
-                                <p><?php echo $value[2]; ?></p>
-                            </div> -->
-                            <!-- コメント削除機能 -->
-                            <!-- <div class="delete-submit">
-                                <input type="hidden" name="del" value="<?php echo $value[0]; ?>">
-                                <input class="btn-submit-delete" type="submit" name="btn_submit" value="削除" onclick="return confirm('コメントを削除しますか？')">
-                            </div>
-                        </article>
                     </form>
-                    <hr>
-                <?php endforeach; ?> -->
+                </div>
             </div>
         </div>
     </section>
+    <script src="script.js"></script>
 </body>
 </html>
